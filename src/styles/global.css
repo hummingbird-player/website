@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@700&display=swap");
+@import "tailwindcss";
+
+@theme {
+    --color-background-primary: #0d0e12;
+    --color-background-secondary: #161720;
+    --color-background-tertiary: #1a1d26;
+    --color-border: #202233;
+    --color-border-strong: #2b2f44;
+    --color-text: #e8e9f2;
+    --color-text-secondary: #a0a1ad;
+    --color-text-disabled: #5f5f71;
+    --color-text-link: #5279d4;
+    --color-button-primary: #5774e7;
+    --color-button-primary-hover: #6d92ff;
+    --color-button-primary-active: #495f9f;
+    --color-button-primary-border: #6d85e4;
+    --color-button-primary-border-hover: #5488ff;
+    --color-button-primary-border-active: #515c8f;
+    --color-button-primary-text: #e0e7f7;
+    --color-button-secondary: #373b4e;
+    --color-button-secondary-hover: #494e67;
+    --color-button-secondary-active: #262636;
+    --color-button-secondary-border: #4f5267;
+    --color-button-secondary-border-hover: #565a77;
+    --color-button-secondary-border-active: #2f3244;
+    --color-button-secondary-text: #dddeec;
+    --color-accent: #688cf0;
+    --color-elevated-background: #161820;
+    --color-elevated-border: #23253b;
+
+    --color-nav-button-hover: #1a1c28;
+    --color-nav-button-hover-border: #212431;
+    --color-nav-button-active: #151620;
+    --color-nav-button-active-border: #191b27;
+    --color-nav-button-pressed: #1f212d;
+    --color-nav-button-pressed-border: #292d3f;
+
+    --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-lexend: "Lexend", ui-sans-serif, system-ui, sans-serif;
+
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+}
+
+:root {
+    background-color: var(--color-background-primary);
+    color: var(--color-text);
+    font-family: var(--font-inter);
+    font-feature-settings:
+        "ss08" 1,
+        "tnum" 1;
+}
+
+html {
+    background: var(--color-background-primary);
+}
+
+body {
+    min-height: 100vh;
+    background: transparent;
+    text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-inter);
+}

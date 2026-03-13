@@ -1,0 +1,168 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button";
+import Card from "../components/Card";
+
+const releaseOptions = [
+    {
+        title: "Stable",
+        text: "Official binaries are available for Windows, macOS, and Linux AppImage builds.",
+        meta: "64-bit ARM and Intel architectures are supported.",
+        href: "https://github.com/hummingbird-player/hummingbird/releases/latest",
+        cta: "Open stable releases",
+    },
+    {
+        title: "Unstable",
+        text: "The latest commit is built automatically and published to the rolling latest tag.",
+        meta: "Windows installers are not currently provided for unstable builds.",
+        href: "https://github.com/143mailliw/hummingbird/releases/tag/latest",
+        cta: "Open unstable builds",
+    },
+];
+
+const packageOptions = [
+    {
+        name: "Fedora",
+        description: "Install from the william341/hummingbird COPR repository.",
+        command: "sudo dnf copr enable william341/hummingbird\nsudo dnf install hummingbird",
+    },
+    {
+        name: "Arch Linux",
+        description: "Install the hummingbird-player package from the AUR.",
+        command: "paru -S hummingbird-player",
+    },
+    {
+        name: "NixOS",
+        description: "Use the flake provided in the main repository while nixpkgs upstreaming continues.",
+        command: "Use the flake from the Hummingbird repository.",
+    },
+];
+---
+
+<Layout
+    title="Download Hummingbird"
+    description="Download Hummingbird for Linux, macOS, and Windows, or install it through Fedora COPR, the AUR, or Nix."
+>
+    <!-- Header -->
+    <header class="mx-auto max-w-6xl pt-14 md:pt-20 pb-10 px-8">
+        <h1 class="text-3xl font-bold tracking-tight text-text sm:text-4xl">
+            Get Hummingbird
+        </h1>
+        <p class="mt-3 max-w-2xl text-base leading-7 text-text-secondary">
+            Native desktop builds for Linux, macOS, and Windows. Choose your platform and installation method below.
+        </p>
+    </header>
+
+    <!-- Quick Platform Stats -->
+    <section class="mx-auto max-w-6xl pb-12 px-8">
+        <div class="grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+            {
+                [
+                    ["Platforms", "Linux, macOS, Windows"],
+                    ["Architectures", "Intel 64-bit and ARM 64-bit"],
+                    ["Release cadence", "Stable and rolling latest"],
+                    ["Source build", "Rust project with setup notes"],
+                ].map(([label, value]) => (
+                    <div class="bg-background-secondary px-6 py-5">
+                        <p class="text-xs text-text-secondary mb-1">
+                            {label}
+                        </p>
+                        <p class="text-sm font-semibold text-text">{value}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Releases -->
+    <section class="bg-background-secondary border-t border-b border-border">
+        <div class="mx-auto max-w-6xl py-16 px-8">
+            <h2 class="text-xl font-bold tracking-tight text-text mb-2">
+                Release Channels
+            </h2>
+            <p class="text-sm text-text-secondary mb-8 max-w-lg">
+                Download pre-built binaries from one of the two release tracks on GitHub.
+            </p>
+
+            <div class="grid gap-4 md:grid-cols-2">
+                {
+                    releaseOptions.map((release) => (
+                        <Card className="flex h-full flex-col px-6 py-6">
+                            <div class="flex items-center justify-between gap-3 border-b border-border pb-5 mb-5">
+                                <h3 class="text-lg font-bold text-text">{release.title}</h3>
+                                <span class="rounded-sm border border-border bg-background-primary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
+                                    Binary
+                                </span>
+                            </div>
+                            <p class="text-sm leading-6 text-text-secondary">
+                                {release.text}
+                            </p>
+                            <p class="mt-3 text-xs leading-5 text-text-disabled">
+                                {release.meta}
+                            </p>
+                            <div class="mt-auto pt-8">
+                                <Button href={release.href} className="w-full px-4 py-2 text-sm">
+                                    {release.cta}
+                                </Button>
+                            </div>
+                        </Card>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Package Managers -->
+    <section class="mx-auto max-w-6xl py-16 px-8">
+        <h2 class="text-xl font-bold tracking-tight text-text mb-2">
+            Distribution Packages
+        </h2>
+        <p class="text-sm text-text-secondary mb-8 max-w-lg">
+            Install Hummingbird through your distribution's package manager.
+        </p>
+
+        <div class="grid gap-4 lg:grid-cols-3">
+            {
+                packageOptions.map((option) => (
+                    <Card className="h-full px-6 py-6 flex flex-col">
+                        <h3 class="text-base font-bold text-text">{option.name}</h3>
+                        <p class="mt-2 text-sm leading-6 text-text-secondary">
+                            {option.description}
+                        </p>
+                        <div class="mt-auto pt-6">
+                            <pre class="overflow-x-auto rounded-sm border border-border bg-background-primary px-4 py-3 text-xs leading-6 text-text font-inter"><code>{option.command}</code></pre>
+                        </div>
+                    </Card>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Source Build -->
+    <section class="mx-auto max-w-6xl pb-20 px-8 border-t border-border pt-16">
+        <div class="rounded-sm border border-border bg-background-secondary">
+            <div class="grid gap-8 px-8 py-8 md:grid-cols-[1fr_auto] md:items-center">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-text">
+                        Build from Source
+                    </h2>
+                    <p class="mt-3 max-w-xl text-sm leading-6 text-text-secondary">
+                        Build documentation, Linux dependency notes, and setup guides are available in the main repository.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <Button href="https://github.com/143mailliw/hummingbird" className="px-5 py-1.5 text-sm">
+                        Source repository
+                    </Button>
+                    <Button
+                        href="https://github.com/143mailliw/hummingbird/blob/main/docs/building.md"
+                        variant="secondary"
+                        className="px-5 py-1.5 text-sm"
+                    >
+                        Build docs
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

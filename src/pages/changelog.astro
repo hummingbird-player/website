@@ -1,0 +1,143 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const releases = (await getCollection("changelog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const renderedReleases = await Promise.all(
+    releases.map(async (release) => {
+        const { Content } = await render(release);
+        return { ...release, Content };
+    }),
+);
+---
+
+<Layout title="Changelog">
+    <div class="max-w-6xl mx-auto px-8">
+        <h1
+            class="text-2xl font-bold mb-6 mt-10 text-text tracking-tight ml-1.5"
+        >
+            Changelog
+        </h1>
+
+        <div class="flex flex-col lg:flex-row gap-6 mb-20">
+            <aside
+                class="lg:w-64 shrink-0 hidden lg:block sticky top-8 self-start"
+            >
+                <nav class="flex flex-col gap-1 border-r border-border pr-3">
+                    <p class="text-sm font-bold text-text-secondary mb-2 ml-2">
+                        Versions
+                    </p>
+                    {
+                        releases.map(({ data }) => (
+                            <a
+                                href={`#v${data.version.replace(/\./g, "-")}`}
+                                class="block font-semibold px-3 py-1.5 rounded-sm transition-all bg-transparent text-text-secondary no-underline hover:bg-nav-button-hover hover:text-text active:bg-nav-button-active [&.current]:bg-nav-button-pressed [&.current]:border-nav-button-pressed-border [&.current]:text-text sidebar-item"
+                                data-version={data.version.replace(/\./g, "-")}
+                            >
+                                {data.version}
+                            </a>
+                        ))
+                    }
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="space-y-12 flex-1 min-w-0">
+                {
+                    renderedReleases.map(({ data, Content }) => (
+                        <section
+                            id={`v${data.version.replace(/\./g, "-")}`}
+                            class="relative scroll-mt-12"
+                        >
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-border pb-4 w-full mb-6">
+                                <h2 class="text-3xl font-bold text-text font-inter tracking-tight">
+                                    {data.version}
+                                </h2>
+                                <time class="ml-auto text-text-secondary">
+                                    {data.pubDate.toLocaleDateString(
+                                        undefined,
+                                        {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        },
+                                    )}
+                                </time>
+                            </div>
+                            <div class="prose prose-invert max-w-none changelog-content">
+                                <Content />
+                            </div>
+                        </section>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    // Update active version in sidebar on scroll
+    const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -70% 0px",
+        threshold: 0,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                document.querySelectorAll(".sidebar-item").forEach((item) => {
+                    if (item.getAttribute("href") === `#${id}`) {
+                        item.classList.add("current");
+                    } else {
+                        item.classList.remove("current");
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll("section[id]").forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+
+<style is:global>
+    @reference "../styles/global.css";
+
+    .changelog-content {
+        --tw-prose-body: var(--color-text);
+        --tw-prose-headings: var(--color-text);
+        --tw-prose-links: var(--color-text-link);
+        --tw-prose-bold: var(--color-text);
+        --tw-prose-bullets: var(--color-accent);
+    }
+
+    .changelog-content h2 {
+        @apply text-2xl font-bold mt-6 mb-4 border-none;
+    }
+
+    .changelog-content h2:first-child {
+        @apply mt-0;
+    }
+
+    .changelog-content ul {
+        @apply list-disc space-y-3 mb-6 ml-4;
+    }
+
+    .changelog-content li {
+        @apply text-text leading-relaxed;
+    }
+
+    .changelog-content li ul {
+        @apply mt-3 mb-3 ml-4 space-y-3 border-l border-border pl-3 list-none;
+    }
+
+    .changelog-content p {
+        @apply mb-4 leading-relaxed;
+    }
+</style>
