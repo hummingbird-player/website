@@ -12,7 +12,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center rounded-sm border text-sm font-semibold font-inter transition-colors duration-100";
+    "inline-flex items-center justify-center rounded-sm border text-sm font-inter transition-colors duration-100 px-3 py-1.5 font-semibold";
   const variants = {
     primary:
       "border-button-primary-border bg-button-primary text-button-primary-text hover:border-button-primary-border-hover hover:bg-button-primary-hover active:border-button-primary-border-active active:bg-button-primary-active",

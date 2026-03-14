@@ -21,4 +21,11 @@ const changelog = defineCollection({
 	}),
 });
 
-export const collections = { blog, changelog };
+const download = defineCollection({
+	loader: glob({ pattern: "**/*.md", base: "./src/content/download" }),
+	schema: z.object({
+		title: z.string(),
+	}),
+});
+
+export const collections = { blog, changelog, download };

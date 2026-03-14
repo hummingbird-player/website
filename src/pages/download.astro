@@ -1,110 +1,127 @@
 ---
+import { getEntry, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-const releaseOptions = [
+const platforms = [
     {
-        title: "Stable",
-        text: "Official binaries are available for Windows, macOS, and Linux AppImage builds.",
-        meta: "64-bit ARM and Intel architectures are supported.",
-        href: "https://github.com/hummingbird-player/hummingbird/releases/latest",
-        cta: "Open stable releases",
+        name: "Windows",
+        types: [
+            {
+                name: "64-bit Intel/AMD",
+                file_name: "HummingbirdSetup_x86_64.exe",
+            },
+            {
+                name: "64-bit ARM",
+                file_name: "HummingbirdSetup_aarch64.exe",
+            },
+            {
+                name: "Portable 64-bit Intel/AMD",
+                file_name: "Hummingbird-x86_64.exe",
+            },
+            {
+                name: "Portable 64-bit ARM",
+                file_name: "Hummingbird-aarch64.exe",
+            },
+        ],
     },
     {
-        title: "Unstable",
-        text: "The latest commit is built automatically and published to the rolling latest tag.",
-        meta: "Windows installers are not currently provided for unstable builds.",
-        href: "https://github.com/143mailliw/hummingbird/releases/tag/latest",
-        cta: "Open unstable builds",
+        name: "macOS",
+        types: [
+            {
+                name: "64-bit Intel",
+                file_name: "hummingbird-intel.dmg",
+            },
+            {
+                name: "Apple Silicon",
+                file_name: "hummingbird-arm.dmg",
+            },
+        ],
+    },
+    {
+        name: "Linux",
+        types: [
+            {
+                name: "64-bit Intel/AMD (AppImage)",
+                file_name: "hummingbird-x86_64.AppImage",
+            },
+            {
+                name: "64-bit ARM (AppImage)",
+                file_name: "hummingbird-aarch64.AppImage",
+            },
+        ],
     },
 ];
 
-const packageOptions = [
-    {
-        name: "Fedora",
-        description: "Install from the william341/hummingbird COPR repository.",
-        command: "sudo dnf copr enable william341/hummingbird\nsudo dnf install hummingbird",
-    },
-    {
-        name: "Arch Linux",
-        description: "Install the hummingbird-player package from the AUR.",
-        command: "paru -S hummingbird-player",
-    },
-    {
-        name: "NixOS",
-        description: "Use the flake provided in the main repository while nixpkgs upstreaming continues.",
-        command: "Use the flake from the Hummingbird repository.",
-    },
-];
+const unstableWindowsExcludedFiles = new Set([
+    "HummingbirdSetup_x86_64.exe",
+    "HummingbirdSetup_aarch64.exe",
+]);
+
+const stableBaseUrl =
+    "https://github.com/hummingbird-player/hummingbird/releases/latest/download";
+const unstableBaseUrl =
+    "https://github.com/hummingbird-player/hummingbird/releases/download/latest";
+
+const distributionPackages = await getEntry(
+    "download",
+    "distribution-packages",
+);
+
+if (!distributionPackages) {
+    throw new Error("Missing distribution packages content entry.");
+}
+
+const { Content: DistributionPackagesContent } =
+    await render(distributionPackages);
 ---
 
 <Layout
     title="Download Hummingbird"
     description="Download Hummingbird for Linux, macOS, and Windows, or install it through Fedora COPR, the AUR, or Nix."
 >
-    <!-- Header -->
-    <header class="mx-auto max-w-6xl pt-14 md:pt-20 pb-10 px-8">
+    <header class="mx-auto max-w-6xl pt-20 pb-18 px-8">
         <h1 class="text-3xl font-bold tracking-tight text-text sm:text-4xl">
             Get Hummingbird
         </h1>
-        <p class="mt-3 max-w-2xl text-base leading-7 text-text-secondary">
-            Native desktop builds for Linux, macOS, and Windows. Choose your platform and installation method below.
-        </p>
     </header>
 
-    <!-- Quick Platform Stats -->
-    <section class="mx-auto max-w-6xl pb-12 px-8">
-        <div class="grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {
-                [
-                    ["Platforms", "Linux, macOS, Windows"],
-                    ["Architectures", "Intel 64-bit and ARM 64-bit"],
-                    ["Release cadence", "Stable and rolling latest"],
-                    ["Source build", "Rust project with setup notes"],
-                ].map(([label, value]) => (
-                    <div class="bg-background-secondary px-6 py-5">
-                        <p class="text-xs text-text-secondary mb-1">
-                            {label}
-                        </p>
-                        <p class="text-sm font-semibold text-text">{value}</p>
-                    </div>
-                ))
-            }
-        </div>
-    </section>
-
-    <!-- Releases -->
     <section class="bg-background-secondary border-t border-b border-border">
         <div class="mx-auto max-w-6xl py-16 px-8">
-            <h2 class="text-xl font-bold tracking-tight text-text mb-2">
-                Release Channels
-            </h2>
-            <p class="text-sm text-text-secondary mb-8 max-w-lg">
-                Download pre-built binaries from one of the two release tracks on GitHub.
-            </p>
-
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid gap-4 lg:grid-cols-3">
                 {
-                    releaseOptions.map((release) => (
-                        <Card className="flex h-full flex-col px-6 py-6">
-                            <div class="flex items-center justify-between gap-3 border-b border-border pb-5 mb-5">
-                                <h3 class="text-lg font-bold text-text">{release.title}</h3>
-                                <span class="rounded-sm border border-border bg-background-primary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
-                                    Binary
-                                </span>
+                    platforms.map((platform) => (
+                        <Card className="flex h-full flex-col px-5 pt-4 pb-5">
+                            <div class="border-b border-border">
+                                <h3 class="text-lg font-bold text-text">
+                                    {platform.name}
+                                </h3>
                             </div>
-                            <p class="text-sm leading-6 text-text-secondary">
-                                {release.text}
-                            </p>
-                            <p class="mt-3 text-xs leading-5 text-text-disabled">
-                                {release.meta}
-                            </p>
-                            <div class="mt-auto pt-8">
-                                <Button href={release.href} className="w-full px-4 py-2 text-sm">
-                                    {release.cta}
-                                </Button>
+
+                            <div class="mt-4 flex flex-1 flex-col gap-3">
+                                {platform.types.map((type) => (
+                                    <Button
+                                        href={`${stableBaseUrl}/${type.file_name}`}
+                                        className="w-full"
+                                    >
+                                        {type.name}
+                                    </Button>
+                                ))}
                             </div>
+
+                            {platform.name === "Linux" && (
+                                <div class="pt-5">
+                                    <Button
+                                        href="#distribution-packages"
+                                        variant="secondary"
+                                        className="w-full px-4 py-2 text-center"
+                                    >
+                                        Install via your distribution's package
+                                        manager
+                                    </Button>
+                                </div>
+                            )}
                         </Card>
                     ))
                 }
@@ -112,57 +129,95 @@ const packageOptions = [
         </div>
     </section>
 
-    <!-- Package Managers -->
-    <section class="mx-auto max-w-6xl py-16 px-8">
-        <h2 class="text-xl font-bold tracking-tight text-text mb-2">
-            Distribution Packages
-        </h2>
-        <p class="text-sm text-text-secondary mb-8 max-w-lg">
-            Install Hummingbird through your distribution's package manager.
-        </p>
+    <section class="border-b border-border">
+        <div class="mx-auto max-w-6xl px-8 py-14">
+            <div>
+                <h2 class="text-xl font-bold tracking-tight text-text">
+                    Unstable Builds
+                </h2>
+                <p class="mt-2 text-sm text-text-secondary">
+                    <strong class="text-text">Warning:</strong> Unstable builds may
+                    be less stable and contain bugs. Use them at your own risk. Windows
+                    installers are not built for unstable builds.
+                </p>
+            </div>
 
-        <div class="grid gap-4 lg:grid-cols-3">
-            {
-                packageOptions.map((option) => (
-                    <Card className="h-full px-6 py-6 flex flex-col">
-                        <h3 class="text-base font-bold text-text">{option.name}</h3>
-                        <p class="mt-2 text-sm leading-6 text-text-secondary">
-                            {option.description}
-                        </p>
-                        <div class="mt-auto pt-6">
-                            <pre class="overflow-x-auto rounded-sm border border-border bg-background-primary px-4 py-3 text-xs leading-6 text-text font-inter"><code>{option.command}</code></pre>
-                        </div>
-                    </Card>
-                ))
-            }
-        </div>
-    </section>
+            <div class="mt-6 grid gap-4 lg:grid-cols-3">
+                {
+                    platforms.map((platform) => {
+                        const unstableTypes = platform.types.filter((type) =>
+                            platform.name === "Windows"
+                                ? !unstableWindowsExcludedFiles.has(
+                                      type.file_name,
+                                  )
+                                : true,
+                        );
 
-    <!-- Source Build -->
-    <section class="mx-auto max-w-6xl pb-20 px-8 border-t border-border pt-16">
-        <div class="rounded-sm border border-border bg-background-secondary">
-            <div class="grid gap-8 px-8 py-8 md:grid-cols-[1fr_auto] md:items-center">
-                <div>
-                    <h2 class="text-xl font-bold tracking-tight text-text">
-                        Build from Source
-                    </h2>
-                    <p class="mt-3 max-w-xl text-sm leading-6 text-text-secondary">
-                        Build documentation, Linux dependency notes, and setup guides are available in the main repository.
-                    </p>
-                </div>
-                <div class="flex flex-col gap-3">
-                    <Button href="https://github.com/143mailliw/hummingbird" className="px-5 py-1.5 text-sm">
-                        Source repository
-                    </Button>
-                    <Button
-                        href="https://github.com/143mailliw/hummingbird/blob/main/docs/building.md"
-                        variant="secondary"
-                        className="px-5 py-1.5 text-sm"
-                    >
-                        Build docs
-                    </Button>
-                </div>
+                        return (
+                            <Card className="flex h-full flex-col px-5 py-5">
+                                <div class="border-b border-border">
+                                    <h3 class="text-base font-bold text-text">
+                                        {platform.name}
+                                    </h3>
+                                </div>
+
+                                <div class="mt-4 flex flex-1 flex-col gap-2.5">
+                                    {unstableTypes.map((type) => (
+                                        <Button
+                                            href={`${unstableBaseUrl}/${type.file_name}`}
+                                            variant="secondary"
+                                            className="w-full px-4 py-2 text-sm"
+                                        >
+                                            {type.name}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </Card>
+                        );
+                    })
+                }
             </div>
         </div>
     </section>
+
+    <section
+        id="distribution-packages"
+        class="mx-auto max-w-6xl py-16 px-8 scroll-mt-24"
+    >
+        <h2 class="text-xl font-bold tracking-tight text-text mb-2">
+            Distribution Packages
+        </h2>
+        <p class="text-sm text-text-secondary mb-8">
+            Prefer native Linux repositories instead of AppImages. These package
+            sources give each distribution its own install path and update flow.
+        </p>
+
+        <div class="download-doc-content">
+            <DistributionPackagesContent />
+        </div>
+    </section>
 </Layout>
+
+<style is:global>
+    @reference "../styles/global.css";
+
+    .download-doc-content h3 {
+        @apply mt-10 border-t border-border pt-6 text-lg font-bold text-text;
+    }
+
+    .download-doc-content p {
+        @apply mt-2 leading-6;
+    }
+
+    .download-doc-content code {
+        @apply rounded-sm border border-border bg-background-secondary px-1.5 py-0.5 text-sm font-mono text-text;
+    }
+
+    .download-doc-content pre {
+        @apply mt-4 overflow-x-auto rounded-sm border border-border bg-background-primary px-4 py-4 text-sm leading-6 text-text;
+    }
+
+    .download-doc-content pre code {
+        @apply border-0 bg-transparent p-0;
+    }
+</style>
