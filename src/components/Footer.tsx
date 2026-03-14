@@ -1,4 +1,27 @@
 import React from "react";
+import {
+  IconBrandDiscordFilled,
+  IconBrandGithubFilled,
+  IconBrandPatreonFilled,
+} from "@tabler/icons-react";
+
+const socialLinks = [
+  {
+    name: "Patreon",
+    href: "https://www.patreon.com/c/william341",
+    icon: IconBrandPatreonFilled,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/hummingbird-player/hummingbird",
+    icon: IconBrandGithubFilled,
+  },
+  {
+    name: "Discord",
+    href: "https://discord.gg/cpBnukdjke",
+    icon: IconBrandDiscordFilled,
+  },
+];
 
 export default function Footer() {
   return (
@@ -7,20 +30,41 @@ export default function Footer() {
         <p className="font-medium text-text">
           © {new Date().getFullYear()} William Whittaker and contributors.
         </p>
-        <nav className="flex flex-wrap gap-3">
-          <a href="/" className="hover:text-text transition-colors">
-            Home
-          </a>
-          <a href="/download" className="hover:text-text transition-colors">
-            Download
-          </a>
-          <a href="/blog" className="hover:text-text transition-colors">
-            Blog
-          </a>
-          <a href="/changelog" className="hover:text-text transition-colors">
-            Changelog
-          </a>
-        </nav>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <nav className="flex flex-wrap gap-3">
+            <a href="/" className="hover:text-text transition-colors">
+              Home
+            </a>
+            <a href="/download" className="hover:text-text transition-colors">
+              Download
+            </a>
+            <a href="/blog" className="hover:text-text transition-colors">
+              Blog
+            </a>
+            <a href="/changelog" className="hover:text-text transition-colors">
+              Changelog
+            </a>
+          </nav>
+
+          <div className="flex items-center gap-1 sm:justify-end">
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.name}
+                  className="rounded-sm p-1.5 text-text-secondary transition-colors hover:bg-nav-button-hover hover:text-text"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </footer>
   );

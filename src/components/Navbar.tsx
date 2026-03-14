@@ -1,4 +1,10 @@
-import { IconMenu, IconX } from "@tabler/icons-react";
+import {
+  IconBrandDiscordFilled,
+  IconBrandGithubFilled,
+  IconBrandPatreonFilled,
+  IconMenu,
+  IconX,
+} from "@tabler/icons-react";
 import React from "react";
 import Button from "./Button";
 
@@ -9,6 +15,24 @@ const navLinks = [
   { name: "Changelog", href: "/changelog" },
 ];
 
+const socialLinks = [
+  {
+    name: "Patreon",
+    href: "https://www.patreon.com/c/william341",
+    icon: IconBrandPatreonFilled,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/hummingbird-player/hummingbird",
+    icon: IconBrandGithubFilled,
+  },
+  {
+    name: "Discord",
+    href: "https://discord.gg/cpBnukdjke",
+    icon: IconBrandDiscordFilled,
+  },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -16,11 +40,7 @@ export default function Navbar() {
     <nav className="bg-background-secondary border-b border-border">
       <div className="max-w-6xl mx-auto px-8 h-12 flex justify-between items-center">
         <a href="/" className="flex items-center gap-2 group">
-          <img
-            src="/logo.svg"
-            alt="Hummingbird Logo"
-            className="w-5 h-5"
-          />
+          <img src="/logo.svg" alt="Hummingbird Logo" className="w-5 h-5" />
           <span className="font-lexend font-bold text-lg text-text tracking-tight">
             Hummingbird
           </span>
@@ -40,10 +60,26 @@ export default function Navbar() {
             ))}
           </div>
 
-          <Button
-            href="/download"
-            className="py-1 px-3 text-sm"
-          >
+          <div className="flex items-center gap-1">
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.name}
+                  className="rounded-sm p-1.5 text-text-secondary transition-colors hover:bg-nav-button-hover hover:text-text"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              );
+            })}
+          </div>
+
+          <Button href="/download" className="py-1 px-3 text-sm">
             Get Hummingbird
           </Button>
         </div>
@@ -74,6 +110,25 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
+          <div className="flex items-center gap-2 px-2 py-1">
+            {socialLinks.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.name}
+                  className="rounded-sm p-1.5 text-text-secondary transition-colors hover:bg-nav-button-hover hover:text-text"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              );
+            })}
+          </div>
           <Button
             href="/download"
             className="text-center text-sm py-1 px-3 mt-1"
