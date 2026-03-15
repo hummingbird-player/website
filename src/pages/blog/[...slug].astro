@@ -71,22 +71,26 @@ const { Content } = await render(post);
         --tw-prose-code: var(--color-text);
     }
 
-    .prose h1,
-    .prose h2,
-    .prose h3 {
-        @apply font-bold mt-12 mb-6 text-text;
-    }
     .prose h1 {
-        @apply text-4xl;
+        @apply text-4xl font-extrabold mt-8 mb-2 w-full border-border-strong border-b pb-3;
     }
     .prose h2 {
-        @apply text-3xl;
+        @apply text-3xl mt-6 mb-3 font-bold;
     }
     .prose h3 {
         @apply text-2xl;
     }
     .prose p {
-        @apply my-6 leading-relaxed text-text;
+        @apply my-3 leading-relaxed text-text;
+    }
+    .prose a {
+        @apply text-text-link underline decoration-accent/60 underline-offset-3 transition-colors;
+    }
+    .prose a:hover {
+        @apply text-accent decoration-accent;
+    }
+    .prose a:focus-visible {
+        @apply rounded-sm outline-none ring-2 ring-accent/60 ring-offset-2 ring-offset-background-primary decoration-accent;
     }
     .prose ul {
         @apply list-disc list-inside my-6 space-y-3;
@@ -110,6 +114,6 @@ const { Content } = await render(post);
         @apply bg-background-secondary border border-border p-6 rounded-lg my-8 overflow-x-auto;
     }
     .prose img {
-        @apply rounded-lg border border-border my-10;
+        @apply rounded-lg border border-border my-4;
     }
 </style>
