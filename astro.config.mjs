@@ -100,6 +100,8 @@ const changelogTags = () => (tree) => {
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://hummingbird.mailliw.org",
+
   integrations: [react()],
 
   markdown: {
