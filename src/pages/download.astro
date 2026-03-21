@@ -3,6 +3,7 @@ import { getEntry, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import SystemRequirementsTabs from "../components/SystemRequirementsTabs";
 
 const platforms = [
     {
@@ -50,6 +51,69 @@ const platforms = [
                 name: "64-bit ARM (AppImage)",
                 file_name: "hummingbird-aarch64.AppImage",
             },
+        ],
+    },
+];
+
+const systemRequirements = [
+    {
+        name: "Windows",
+        minimum: [
+            "OS: Windows 10 64-bit",
+            "CPU: Intel Core 2 Duo T9300, AMD FX-6100, or Qualcomm Snapdragon X1",
+            "Memory: 8 GB RAM",
+            "Storage: 500 MB available space",
+            "Graphics: Full DirectX 11 support (AMD Radeon HD 5000 series, NVIDIA GeForce GT 400 series, or Intel HD Graphics 4000 series)",
+        ],
+        recommended: [
+            "OS: Windows 11 64-bit",
+            "CPU: Intel i5-2600K or AMD Ryzen 5 1600",
+            "Memory: 8 GB RAM",
+            "Storage: 2 GB available space on SSD",
+            "Graphics: AMD Radeon RX 400 series, NVIDIA GeForce 1000 series, or Intel HD Graphics 500 series",
+        ],
+        notes: [
+            "Storage requirements may vary based on size of library.",
+            "Windows on ARM support is experimental, incomplete, and provided on a best-effort basis due to a lack of hardware available for testing.",
+        ],
+    },
+    {
+        name: "Linux",
+        minimum: [
+            "OS: Ubuntu 22.04 LTS",
+            "CPU: 64-bit dual-core x86/ARM processor with SSE 4.1 support",
+            "Memory: 4 GB RAM",
+            "Storage: 500MB available space",
+            "Graphics: OpenGL 3.3 compatible GPU",
+        ],
+        recommended: [
+            "OS: Fedora 42 or later",
+            "CPU: 64-bit quad-core x86/ARM processor with AVX support",
+            "Memory: 8 GB RAM",
+            "Storage: 2 GB available space on SSD",
+            "Graphics: Vulkan compatible GPU",
+        ],
+        notes: ["Storage requirements may vary based on size of library."],
+    },
+    {
+        name: "macOS",
+        minimum: [
+            "OS: macOS 13 Ventura",
+            "CPU: Intel or Apple Silicon processor",
+            "Memory: 4 GB RAM",
+            "Storage: 500 MB available space",
+            "Graphics: Metal support required",
+        ],
+        recommended: [
+            "OS: macOS 26 Tahoe",
+            "CPU: M1 or later Apple Silicon processor",
+            "Memory: 8 GB RAM",
+            "Storage: 2 GB available space on SSD",
+            "Graphics: Metal support required",
+        ],
+        notes: [
+            "Storage requirements may vary based on size of library.",
+            "Intel Mac support is provided on a best-effort basis due to a lack of hardware available for testing.",
         ],
     },
 ];
@@ -126,6 +190,22 @@ const { Content: DistributionPackagesContent } =
                     ))
                 }
             </div>
+        </div>
+    </section>
+
+    <section class="border-b border-border">
+        <div class="mx-auto max-w-6xl px-8 py-14">
+            <div>
+                <h2 class="text-xl font-bold tracking-tight text-text">
+                    System Requirements
+                </h2>
+            </div>
+
+            <SystemRequirementsTabs
+                platforms={systemRequirements}
+                defaultPlatform="Windows"
+                client:load
+            />
         </div>
     </section>
 
