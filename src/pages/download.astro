@@ -118,11 +118,6 @@ const systemRequirements = [
     },
 ];
 
-const unstableWindowsExcludedFiles = new Set([
-    "HummingbirdSetup_x86_64.exe",
-    "HummingbirdSetup_aarch64.exe",
-]);
-
 const stableBaseUrl =
     "https://github.com/hummingbird-player/hummingbird/releases/latest/download";
 const unstableBaseUrl =
@@ -217,22 +212,13 @@ const { Content: DistributionPackagesContent } =
                 </h2>
                 <p class="mt-2 text-sm text-text-secondary">
                     <strong class="text-text">Warning:</strong> Unstable builds may
-                    be less stable and contain bugs. Use them at your own risk. Windows
-                    installers are not built for unstable builds.
+                    be less stable and contain bugs. Use them at your own risk.
                 </p>
             </div>
 
             <div class="mt-6 grid gap-4 lg:grid-cols-3">
                 {
                     platforms.map((platform) => {
-                        const unstableTypes = platform.types.filter((type) =>
-                            platform.name === "Windows"
-                                ? !unstableWindowsExcludedFiles.has(
-                                      type.file_name,
-                                  )
-                                : true,
-                        );
-
                         return (
                             <Card className="flex h-full flex-col px-5 py-5">
                                 <div class="border-b border-border">
@@ -242,7 +228,7 @@ const { Content: DistributionPackagesContent } =
                                 </div>
 
                                 <div class="mt-4 flex flex-1 flex-col gap-2.5">
-                                    {unstableTypes.map((type) => (
+                                    {platform.types.map((type) => (
                                         <Button
                                             href={`${unstableBaseUrl}/${type.file_name}`}
                                             variant="secondary"
