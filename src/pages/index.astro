@@ -20,7 +20,7 @@ const latestPostDate = latestPost?.data.pubDate.toLocaleDateString("en-US", {
 >
     <!-- Hero -->
     <section
-        class="relative overflow-hidden flex items-center pt-12 pb-12 sm:pt-16 sm:pb-14 lg:min-h-[calc(100vh-48px)] lg:py-0"
+        class="relative overflow-hidden flex flex-col justify-center items-center pt-12 pb-12 sm:pt-16 sm:pb-14 lg:min-h-[calc(100vh-48px)] lg:py-0"
     >
         <div
             class="pointer-events-none absolute hidden lg:block right-[-10%] top-1/2 w-[72%] -translate-y-1/2 opacity-60"
@@ -57,35 +57,30 @@ const latestPostDate = latestPost?.data.pubDate.toLocaleDateString("en-US", {
                     </Button>
                 </div>
             </div>
-        </div>
-        {
-            latestPost && (
-                <div class="max-w-6xl px-5 pt-5 sm:px-8 sm:pt-6">
-                    <a
-                        href={`/blog/${latestPost.id}`}
-                        class="group flex flex-col gap-3 rounded-xl border border-accent/25 bg-background-secondary px-4 py-3 sm:px-5 sm:py-3.5 md:flex-row md:items-center md:justify-between"
-                    >
-                        <p class="truncate pr-2 text-sm font-medium text-text sm:text-[15px]">
-                            {latestPost.data.title}
-                        </p>
-                        <div class="flex shrink-0 items-center gap-4 text-xs sm:text-sm">
-                            <span class="text-text-secondary">
-                                {latestPostDate}
-                            </span>
-                            <span class="inline-flex items-center gap-2 font-semibold text-text-link transition-colors group-hover:text-button-primary-hover">
-                                Read post
-                                <span
-                                    aria-hidden="true"
-                                    class="transition-transform group-hover:translate-x-1"
-                                >
-                                    →
+            {
+                latestPost && (
+                    <div class="w-full max-w-2xl pt-5 sm:pt-6 relative z-10">
+                        <a
+                            href={`/blog/${latestPost.id}`}
+                            class="group flex flex-col gap-3 rounded-xl border border-border bg-background-secondary px-4 py-3 sm:px-5 sm:py-3.5 md:flex-row md:items-center md:justify-between"
+                        >
+                            <p class="truncate pr-2 text-sm font-medium text-text sm:text-[15px]">
+                                {latestPost.data.title}
+                            </p>
+                            <div class="flex shrink-0 items-center gap-4 text-xs sm:text-sm">
+                                <span class="text-text-secondary">
+                                    {latestPostDate}
                                 </span>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            )
-        }
+                                <span class="inline-flex items-center gap-2 font-semibold text-text-link transition-colors group-hover:text-button-primary-hover">
+                                    Read post
+                                    <span aria-hidden="true">→</span>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                )
+            }
+        </div>
     </section>
 
     <section class="bg-background-secondary border-t border-b border-border">
