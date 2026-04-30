@@ -1,9 +1,6 @@
 import React from "react";
-import {
-  IconBrandDiscordFilled,
-  IconBrandGithubFilled,
-  IconBrandPatreonFilled,
-} from "@tabler/icons-react";
+import { IconBrandDiscordFilled, IconBrandPatreonFilled } from "@tabler/icons-react";
+import CodebergIcon from "./codeberg-logo.svg?react";
 
 const socialLinks = [
   {
@@ -13,8 +10,8 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/hummingbird-player/hummingbird",
-    icon: IconBrandGithubFilled,
+    href: "https://codeberg.org/hummingbird/hummingbird",
+    icon: CodebergIcon,
   },
   {
     name: "Discord",

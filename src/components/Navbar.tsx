@@ -1,12 +1,12 @@
 import {
   IconBrandDiscordFilled,
-  IconBrandGithubFilled,
   IconBrandPatreonFilled,
   IconMenu,
   IconX,
 } from "@tabler/icons-react";
 import React from "react";
 import Button from "./Button";
+import CodebergIcon from "./codeberg-logo.svg?react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -23,8 +23,8 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/hummingbird-player/hummingbird",
-    icon: IconBrandGithubFilled,
+    href: "https://codeberg.org/hummingbird/hummingbird",
+    icon: CodebergIcon,
   },
   {
     name: "Discord",
@@ -89,11 +89,7 @@ export default function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden p-2 text-text-secondary hover:text-text"
         >
-          {isOpen ? (
-            <IconX className="h-6 w-6" />
-          ) : (
-            <IconMenu className="h-6 w-6" />
-          )}
+          {isOpen ? <IconX className="h-6 w-6" /> : <IconMenu className="h-6 w-6" />}
         </button>
       </div>
 

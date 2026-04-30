@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
+import svgr from "vite-plugin-svgr";
 import { __iconNode as iconFeature } from "@tabler/icons-react/dist/esm/icons/IconCirclePlus.mjs";
 import { __iconNode as iconImprovement } from "@tabler/icons-react/dist/esm/icons/IconCircleArrowUp.mjs";
 import { __iconNode as iconFix } from "@tabler/icons-react/dist/esm/icons/IconCircleCheck.mjs";
@@ -81,11 +82,7 @@ const changelogTags = () => (tree) => {
         if (parent && parent.children) {
           const index = parent.children.indexOf(node);
           const next = parent.children[index + 1];
-          if (
-            next &&
-            next.type === "text" &&
-            next.value.trimStart().startsWith(":")
-          ) {
+          if (next && next.type === "text" && next.value.trimStart().startsWith(":")) {
             next.value = next.value.trimStart().slice(1);
           }
         }
@@ -109,6 +106,6 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), svgr()],
   },
 });
