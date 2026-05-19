@@ -17,7 +17,7 @@ const platforms = [
             {
                 name: "64-bit ARM",
                 file_name: "HummingbirdSetup_aarch64.exe",
-                stable_only: true,
+                stable_only: false,
             },
             {
                 name: "Portable 64-bit Intel/AMD",
@@ -27,7 +27,7 @@ const platforms = [
             {
                 name: "Portable 64-bit ARM",
                 file_name: "Hummingbird-aarch64.exe",
-                stable_only: true,
+                stable_only: false,
             },
         ],
     },
@@ -37,7 +37,7 @@ const platforms = [
             {
                 name: "64-bit Intel",
                 file_name: "hummingbird-intel.dmg",
-                stable_only: true,
+                stable_only: false,
             },
             {
                 name: "Apple Silicon",
@@ -127,16 +127,22 @@ const systemRequirements = [
 ];
 
 // TODO: There might be a way to fetch from Codeberg without requiring javascript on client-side
-const stableBaseUrl = "https://codeberg.org/hummingbird/hummingbird/releases/download/0.3.0";
-const unstableBaseUrl = "https://codeberg.org/hummingbird/hummingbird/releases/download/latest";
+const stableBaseUrl =
+    "https://codeberg.org/hummingbird/hummingbird/releases/download/0.3.0";
+const unstableBaseUrl =
+    "https://codeberg.org/hummingbird/hummingbird/releases/download/latest";
 
-const distributionPackages = await getEntry("download", "distribution-packages");
+const distributionPackages = await getEntry(
+    "download",
+    "distribution-packages",
+);
 
 if (!distributionPackages) {
     throw new Error("Missing distribution packages content entry.");
 }
 
-const { Content: DistributionPackagesContent } = await render(distributionPackages);
+const { Content: DistributionPackagesContent } =
+    await render(distributionPackages);
 ---
 
 <Layout
@@ -144,7 +150,9 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
     description="Download Hummingbird for Linux, macOS, and Windows, or install it through Fedora COPR, the AUR, or Nix."
 >
     <header class="mx-auto max-w-6xl pt-20 pb-18 px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-text sm:text-4xl">Get Hummingbird</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-text sm:text-4xl">
+            Get Hummingbird
+        </h1>
     </header>
 
     <section class="bg-background-secondary border-t border-b border-border">
@@ -154,7 +162,9 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
                     platforms.map((platform) => (
                         <Card className="flex h-full flex-col px-5 pt-4 pb-5">
                             <div class="border-b border-border">
-                                <h3 class="text-lg font-bold text-text">{platform.name}</h3>
+                                <h3 class="text-lg font-bold text-text">
+                                    {platform.name}
+                                </h3>
                             </div>
 
                             <div class="mt-4 flex flex-1 flex-col gap-3">
@@ -175,7 +185,8 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
                                         variant="secondary"
                                         className="w-full px-4 py-2 text-center"
                                     >
-                                        Install via your distribution's package manager
+                                        Install via your distribution's package
+                                        manager
                                     </Button>
                                 </div>
                             )}
@@ -189,7 +200,9 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
     <section class="border-b border-border">
         <div class="mx-auto max-w-6xl px-8 py-14">
             <div>
-                <h2 class="text-xl font-bold tracking-tight text-text">System Requirements</h2>
+                <h2 class="text-xl font-bold tracking-tight text-text">
+                    System Requirements
+                </h2>
             </div>
 
             <SystemRequirementsTabs
@@ -203,10 +216,12 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
     <section class="border-b border-border">
         <div class="mx-auto max-w-6xl px-8 py-14">
             <div>
-                <h2 class="text-xl font-bold tracking-tight text-text">Unstable Builds</h2>
+                <h2 class="text-xl font-bold tracking-tight text-text">
+                    Unstable Builds
+                </h2>
                 <p class="mt-2 text-sm text-text-secondary">
-                    <strong class="text-text">Warning:</strong> Unstable builds may be less stable and
-                    contain bugs. Use them at your own risk.
+                    <strong class="text-text">Warning:</strong> Unstable builds may
+                    be less stable and contain bugs. Use them at your own risk.
                 </p>
             </div>
 
@@ -216,7 +231,9 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
                         return (
                             <Card className="flex h-full flex-col px-5 py-5">
                                 <div class="border-b border-border">
-                                    <h3 class="text-base font-bold text-text">{platform.name}</h3>
+                                    <h3 class="text-base font-bold text-text">
+                                        {platform.name}
+                                    </h3>
                                 </div>
 
                                 <div class="mt-4 flex flex-1 flex-col gap-2.5">
@@ -240,8 +257,13 @@ const { Content: DistributionPackagesContent } = await render(distributionPackag
         </div>
     </section>
 
-    <section id="distribution-packages" class="mx-auto max-w-6xl py-16 px-8 scroll-mt-24">
-        <h2 class="text-xl font-bold tracking-tight text-text mb-2">Distribution Packages</h2>
+    <section
+        id="distribution-packages"
+        class="mx-auto max-w-6xl py-16 px-8 scroll-mt-24"
+    >
+        <h2 class="text-xl font-bold tracking-tight text-text mb-2">
+            Distribution Packages
+        </h2>
 
         <div class="download-doc-content">
             <DistributionPackagesContent />
