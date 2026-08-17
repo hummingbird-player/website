@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import Button from "./Button";
-import CodebergIcon from "./codeberg-logo.svg?react";
+import ForgejoIcon from "./forgejo-logo.svg?react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -22,9 +22,9 @@ const socialLinks = [
     icon: IconBrandPatreonFilled,
   },
   {
-    name: "GitHub",
-    href: "https://codeberg.org/hummingbird/hummingbird",
-    icon: CodebergIcon,
+    name: "Forgejo",
+    href: "https://git.mailliw.org/hummingbird/hummingbird",
+    icon: ForgejoIcon,
   },
   {
     name: "Discord",
