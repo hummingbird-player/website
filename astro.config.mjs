@@ -95,6 +95,93 @@ const changelogTags = () => (tree) => {
   visit(tree, null);
 };
 
+const attributionPattern = /\s*\(((?:@[^,()]+(?:\([^()]*\))?\s*,?\s*)+)\)\.?\s*$/;
+
+const changelogAttribution = () => (tree, file) => {
+  if (!file.path?.includes("/changelog/")) return;
+
+  // these older ones didn't attribute my (143mailliw) changes
+  const version =
+    file.data?.astro?.frontmatter?.version ?? file.path.split("/").pop().replace(/\.md$/, "");
+  const [major = 0, minor = 0, patch = 0] = String(version).split(".").map(Number);
+  const isLegacy = major === 0 && (minor < 3 || (minor === 3 && patch === 0));
+
+  const authorNode = (raw) => {
+    const name = raw.trim();
+    const handle = name.match(/^@([\w.-]+)$/)?.[1];
+    if (!handle) {
+      return { type: "element", tagName: "span", properties: {}, children: [{ type: "text", value: name }] };
+    }
+    // "@user.github" / "@user.codeberg" handling
+    const forges = {
+      github: "https://github.com/",
+      codeberg: "https://codeberg.org/",
+    };
+    const [, user, forge] = handle.match(/^(.+)\.(github|codeberg)$/) ?? [, handle];
+    const base = forges[forge] ?? "https://git.mailliw.org/";
+    return {
+      type: "element",
+      tagName: "a",
+      properties: {
+        href: `${base}${user}`,
+        title: forge ? `@${user} on ${forge === "github" ? "GitHub" : "Codeberg"}` : undefined,
+        className: ["text-text-secondary", "no-underline", "hover:text-text", "hover:underline"],
+      },
+      children: [{ type: "text", value: `@${user}` }],
+    };
+  };
+
+  const processItem = (li) => {
+    const container =
+      li.children.find((c) => c.type === "element" && c.tagName === "p") ?? li;
+    const idx = container.children.findLastIndex(
+      (c) => !(c.type === "element" && c.tagName === "ul") && !(c.type === "text" && !c.value.trim()),
+    );
+    const last = container.children[idx];
+    const match = last?.type === "text" ? last.value.match(attributionPattern) : null;
+    let children = [];
+    let missing = false;
+
+    if (match) {
+      last.value = last.value.slice(0, match.index);
+      const authors = match[1].split(/,(?![^()]*\))/).filter((a) => a.trim());
+      authors.forEach((a, i) => {
+        if (i > 0) children.push({ type: "text", value: ", " });
+        children.push(authorNode(a));
+      });
+    } else if (last?.type === "text" && last.value.trimEnd().endsWith(":")) {
+      // ignore group headers (e.g. "Added 2 new languages:")
+      return;
+    } else if (isLegacy) {
+      children = [authorNode("@143mailliw")];
+    } else {
+      missing = true;
+      children = [{ type: "text", value: "invalid or missing attribution" }];
+    }
+
+    container.children.unshift({
+      type: "element",
+      tagName: "span",
+      properties: {
+        className: [
+          "float-right",
+          "ml-4",
+          "text-sm",
+          "leading-relaxed",
+          missing ? "text-red-500" : "text-text-secondary",
+        ],
+      },
+      children,
+    });
+  };
+
+  const visit = (node) => {
+    if (node.type === "element" && node.tagName === "li") processItem(node);
+    node.children?.forEach(visit);
+  };
+  visit(tree);
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://hummingbird.mailliw.org",
@@ -102,7 +189,7 @@ export default defineConfig({
   integrations: [react()],
 
   markdown: {
-    rehypePlugins: [changelogTags],
+    rehypePlugins: [changelogTags, changelogAttribution],
   },
 
   vite: {
