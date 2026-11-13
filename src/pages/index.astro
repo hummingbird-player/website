@@ -36,7 +36,7 @@ const latestPostDate = latestPost?.data.pubDate.toLocaleDateString("en-US", {
             class="relative z-10 w-full mx-auto max-w-6xl px-5 sm:px-8 flex flex-col"
         >
             <div
-                class="max-w-2xl rounded-xl border border-border bg-background-secondary px-5 py-6 sm:px-6 sm:py-6"
+                class="max-w-2xl rounded-lg border border-border bg-background-secondary px-5 py-6 sm:px-6 sm:py-6"
             >
                 <h1
                     class="text-2xl font-bold text-text sm:text-3xl tracking-tight leading-[1.15]"
@@ -62,7 +62,7 @@ const latestPostDate = latestPost?.data.pubDate.toLocaleDateString("en-US", {
                     <div class="w-full max-w-2xl pt-5 sm:pt-6 relative z-10">
                         <a
                             href={`/blog/${latestPost.id}`}
-                            class="group flex flex-col gap-3 rounded-xl border border-border bg-background-secondary px-4 py-3 sm:px-5 sm:py-3.5 md:flex-row md:items-center md:justify-between"
+                            class="group flex flex-col gap-3 rounded-lg border border-border bg-background-secondary px-4 py-3 sm:px-5 sm:py-3.5 md:flex-row md:items-center md:justify-between"
                         >
                             <p class="truncate pr-2 text-sm font-medium text-text sm:text-[15px]">
                                 {latestPost.data.title}

@@ -36,7 +36,7 @@ export default function SystemRequirementsTabs({
   return (
     <>
       <div
-        className="mt-6 inline-flex flex-wrap gap-2 rounded-lg border border-elevated-border bg-elevated-background p-2"
+        className="mt-6 inline-flex flex-wrap gap-2 rounded-md border border-elevated-border bg-elevated-background p-2"
         role="tablist"
         aria-label="System requirements by platform"
       >
@@ -55,7 +55,7 @@ export default function SystemRequirementsTabs({
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActivePlatform(platform.name)}
-              className={`rounded-sm border px-4 py-2 text-sm font-semibold transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${isActive ? activeTabClasses : inactiveTabClasses}`}
+              className={`rounded-md border shadow-md px-4 py-2 text-sm font-semibold transition-colors duration-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${isActive ? activeTabClasses : inactiveTabClasses}`}
             >
               {platform.name}
             </button>

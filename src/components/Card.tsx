@@ -12,7 +12,7 @@ export default function Card({
 }: CardProps) {
     return (
         <div
-            className={`rounded-lg border border-elevated-border bg-elevated-background ${className}`}
+            className={`rounded-md border border-elevated-border bg-elevated-background ${className}`}
             {...props}
         >
             {children}
