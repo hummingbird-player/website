@@ -12,24 +12,18 @@ const posts = (await getCollection("blog")).sort(
     <div class="max-w-6xl mx-auto px-8 py-12">
         <h1 class="text-2xl font-bold mb-8 text-text">Blog</h1>
 
-        {
-            posts.length === 0 ? (
-                <div class="py-20 border-2 border-dashed border-border text-center text-text-secondary rounded-lg">
-                    No blog posts found.
-                </div>
-            ) : (
-                <div class="grid md:grid-cols-2 gap-6">
-                    {posts.map((post) => (
-                        <Card className="flex flex-col items-start h-full px-4 py-4">
-                            <div class="flex gap-4 items-center text-sm text-text-secondary mb-2 w-full">
-                                <div>
-                                    {post.data.pubDate.toLocaleDateString()}
-                                </div>
-                                <div class="px-2 py-0.5 border border-accent/30 rounded text-xs text-accent bg-accent/5 font-semibold ml-auto">
-                                    {post.data.category}
-                                </div>
-                            </div>
-                            <h2 class="text-2xl font-bold mb-4 text-text leading-tight group">
+        {posts.length === 0 ? (
+            <div class="py-20 border-2 border-dashed border-border text-center text-text-secondary rounded-lg">
+                No blog posts found.
+            </div>
+        ) : (
+            <div class="flex flex-col gap-4">
+                {posts.map((post, index) => (
+                    <div class="flex flex-col items-start h-full w-full pb-4 border-b border-b-border">
+                        <div class="flex w-full justify-between">
+                            <h2
+                                class={`font-bold text-text group shrink-0 ${index == 0 ? "text-2xl mb-1 leading-tight" : "leading-relaxed"}`}
+                            >
                                 <a
                                     href={`/blog/${post.id}`}
                                     class="hover:text-text-link transition-colors"
@@ -37,13 +31,28 @@ const posts = (await getCollection("blog")).sort(
                                     {post.data.title}
                                 </a>
                             </h2>
-                            <p class="text-text-secondary leading-relaxed line-clamp-3">
+                            {index != 0 && (
+                                <p class="text-text-secondary leading-relaxed line-clamp-3 w-full shrink text-ellipsis text-nowrap mx-4">
+                                    {post.data.description}
+                                </p>
+                            )}
+                            <div class="flex gap-2 items-center text-sm text-text-secondary">
+                                <div class="font-semibold border border-elevated-border bg-elevated-background py-1 px-2 rounded-sm leading-tight">
+                                    {post.data.category}
+                                </div>
+                                <div>
+                                    {post.data.pubDate.toLocaleDateString()}
+                                </div>
+                            </div>
+                        </div>
+                        {index == 0 && (
+                            <p class="text-text-secondary leading-relaxed line-clamp-3 w-full shrink text-ellipsis text-nowrap">
                                 {post.data.description}
                             </p>
-                        </Card>
-                    ))}
-                </div>
-            )
-        }
+                        )}
+                    </div>
+                ))}
+            </div>
+        )}
     </div>
 </Layout>

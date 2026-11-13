@@ -27,29 +27,22 @@ const { Content } = await render(post);
     </header>
     <article class="max-w-4xl mx-auto py-4 px-8">
         <header class="mb-4 border-b border-border pb-6">
-            <div
-                class="flex gap-4 items-center text-sm text-text-secondary mb-1"
-            >
-                <time class="font-medium"
-                    >{
-                        post.data.pubDate.toLocaleDateString(undefined, {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })
-                    }</time
-                >
-                <span
-                    class="px-2 py-0.5 border border-accent/30 rounded text-xs text-accent bg-accent/5 font-semibold tracking-wide"
-                    >{post.data.category}</span
-                >
+            <div class="flex gap-4 items-center text-sm text-text-secondary mb-1">
+                <time class="font-medium">
+                    {post.data.pubDate.toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}
+                </time>
+                <span class="font-semibold border border-elevated-border bg-elevated-background py-1 px-2 rounded-sm leading-tight">
+                    {post.data.category}
+                </span>
             </div>
             <h1 class="text-5xl font-extrabold mb-2 text-text leading-tight">
                 {post.data.title}
             </h1>
-            <p class="text-text-secondary font-medium">
-                {post.data.author}
-            </p>
+            <p class="text-text-secondary font-medium">{post.data.author}</p>
         </header>
 
         <div class="prose prose-invert max-w-none">
