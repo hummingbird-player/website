@@ -125,7 +125,7 @@ const systemRequirements = [
 
 // TODO: There might be a way to fetch from Codeberg without requiring javascript on client-side
 const stableBaseUrl =
-    "https://git.mailliw.org/hummingbird/hummingbird/releases/download/0.4.0";
+    "https://git.mailliw.org/hummingbird/hummingbird/releases/download/0.4.1";
 const unstableBaseUrl =
     "https://git.mailliw.org/hummingbird/hummingbird/releases/download/latest";
 
@@ -155,41 +155,39 @@ const { Content: DistributionPackagesContent } =
     <section class="bg-background-secondary border-t border-b border-border">
         <div class="mx-auto max-w-6xl py-16 px-8">
             <div class="grid gap-4 lg:grid-cols-3">
-                {
-                    platforms.map((platform) => (
-                        <Card className="flex h-full flex-col px-5 pt-4 pb-5">
-                            <div class="border-b border-border">
-                                <h3 class="text-lg font-bold text-text">
-                                    {platform.name}
-                                </h3>
-                            </div>
+                {platforms.map((platform) => (
+                    <Card className="flex h-full flex-col px-5 pt-4 pb-5">
+                        <div class="border-b border-border">
+                            <h3 class="text-lg font-bold text-text">
+                                {platform.name}
+                            </h3>
+                        </div>
 
-                            <div class="mt-4 flex flex-1 flex-col gap-3">
-                                {platform.types.map((type) => (
-                                    <Button
-                                        href={`${stableBaseUrl}/${type.file_name}`}
-                                        className="w-full"
-                                    >
-                                        {type.name}
-                                    </Button>
-                                ))}
-                            </div>
+                        <div class="mt-4 flex flex-1 flex-col gap-3">
+                            {platform.types.map((type) => (
+                                <Button
+                                    href={`${stableBaseUrl}/${type.file_name}`}
+                                    className="w-full"
+                                >
+                                    {type.name}
+                                </Button>
+                            ))}
+                        </div>
 
-                            {platform.name === "Linux" && (
-                                <div class="pt-5">
-                                    <Button
-                                        href="#distribution-packages"
-                                        variant="secondary"
-                                        className="w-full px-4 py-2 text-center"
-                                    >
-                                        Install via your distribution's package
-                                        manager
-                                    </Button>
-                                </div>
-                            )}
-                        </Card>
-                    ))
-                }
+                        {platform.name === "Linux" && (
+                            <div class="pt-5">
+                                <Button
+                                    href="#distribution-packages"
+                                    variant="secondary"
+                                    className="w-full px-4 py-2 text-center"
+                                >
+                                    Install via your distribution's package
+                                    manager
+                                </Button>
+                            </div>
+                        )}
+                    </Card>
+                ))}
             </div>
         </div>
     </section>
@@ -217,39 +215,38 @@ const { Content: DistributionPackagesContent } =
                     Unstable Builds
                 </h2>
                 <p class="mt-2 text-sm text-text-secondary">
-                    <strong class="text-text">Warning:</strong> Unstable builds may
-                    be less stable and contain bugs. Use them at your own risk.
+                    <strong class="text-text">Warning:</strong> Unstable builds
+                    may be less stable and contain bugs. Use them at your own
+                    risk.
                 </p>
             </div>
 
             <div class="mt-6 grid gap-4 lg:grid-cols-3">
-                {
-                    platforms.map((platform) => {
-                        return (
-                            <Card className="flex h-full flex-col px-5 py-5">
-                                <div class="border-b border-border">
-                                    <h3 class="text-base font-bold text-text">
-                                        {platform.name}
-                                    </h3>
-                                </div>
+                {platforms.map((platform) => {
+                    return (
+                        <Card className="flex h-full flex-col px-5 py-5">
+                            <div class="border-b border-border">
+                                <h3 class="text-base font-bold text-text">
+                                    {platform.name}
+                                </h3>
+                            </div>
 
-                                <div class="mt-4 flex flex-1 flex-col gap-2.5">
-                                    {platform.types
-                                        .filter((type) => !type.stable_only)
-                                        .map((type) => (
-                                            <Button
-                                                href={`${unstableBaseUrl}/${type.file_name}`}
-                                                variant="secondary"
-                                                className="w-full px-4 py-2 text-sm"
-                                            >
-                                                {type.name}
-                                            </Button>
-                                        ))}
-                                </div>
-                            </Card>
-                        );
-                    })
-                }
+                            <div class="mt-4 flex flex-1 flex-col gap-2.5">
+                                {platform.types
+                                    .filter((type) => !type.stable_only)
+                                    .map((type) => (
+                                        <Button
+                                            href={`${unstableBaseUrl}/${type.file_name}`}
+                                            variant="secondary"
+                                            className="w-full px-4 py-2 text-sm"
+                                        >
+                                            {type.name}
+                                        </Button>
+                                    ))}
+                            </div>
+                        </Card>
+                    );
+                })}
             </div>
         </div>
     </section>
